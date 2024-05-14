@@ -24,6 +24,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.12.0'
     implementation 'ru.tinkoff.piapi:java-sdk-core:1.5'
     compileOnly 'org.projectlombok:lombok'
