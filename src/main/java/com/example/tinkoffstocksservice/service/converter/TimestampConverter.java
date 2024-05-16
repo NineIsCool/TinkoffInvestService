@@ -1,4 +1,4 @@
-package com.example.tinkoffstocksservice.service.mapper;
+package com.example.tinkoffstocksservice.service.converter;
 
 import com.google.protobuf.Timestamp;
 import org.springframework.stereotype.Component;

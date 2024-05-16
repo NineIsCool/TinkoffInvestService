@@ -1,4 +1,4 @@
-package com.example.tinkoffstocksservice.service.mapper;
+package com.example.tinkoffstocksservice.service.converter;
 
 import org.springframework.stereotype.Component;
 import ru.tinkoff.piapi.contract.v1.MoneyValue;

@@ -1,6 +1,8 @@
 package com.example.tinkoffstocksservice.service.mapper;
 
 import com.example.tinkoffstocksservice.adapter.web.dto.response.PriceResponse;
+import com.example.tinkoffstocksservice.service.converter.QuotationConverter;
+import com.example.tinkoffstocksservice.service.converter.TimestampConverter;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
