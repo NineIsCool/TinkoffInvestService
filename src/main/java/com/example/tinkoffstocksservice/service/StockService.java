@@ -16,6 +16,7 @@ import ru.tinkoff.piapi.contract.v1.Share;
 import ru.tinkoff.piapi.core.InstrumentsService;
 import ru.tinkoff.piapi.core.InvestApi;
 import ru.tinkoff.piapi.core.MarketDataService;
+import ru.tinkoff.piapi.core.exception.ApiRuntimeException;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,7 +36,7 @@ public class StockService {
         Share stock;
         try {
             stock = instrumentsService.getShareByUidSync(uid);
-        } catch (Exception e) {
+        } catch (ApiRuntimeException e) {
             throw new NotFoundException(uid);
         }
         return stockMapper.stockToResponse(stock);
@@ -47,7 +48,7 @@ public class StockService {
         List<LastPrice> lastPrices;
         try {
             lastPrices = marketData.getLastPricesSync(Collections.singleton(uid));
-        } catch (Exception e) {
+        } catch (ApiRuntimeException e) {
             throw new NotFoundException(uid);
         }
         return priceMapper.priceResponse(stockResponse.currency(), lastPrices.get(0));

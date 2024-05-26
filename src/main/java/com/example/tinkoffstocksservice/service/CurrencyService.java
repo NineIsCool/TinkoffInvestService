@@ -12,6 +12,7 @@ import ru.tinkoff.piapi.contract.v1.LastPrice;
 import ru.tinkoff.piapi.core.InstrumentsService;
 import ru.tinkoff.piapi.core.InvestApi;
 import ru.tinkoff.piapi.core.MarketDataService;
+import ru.tinkoff.piapi.core.exception.ApiRuntimeException;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,8 +30,9 @@ public class CurrencyService {
             Currency currency = instrumentsService.getCurrencyByUidSync(uid);
             List<LastPrice> price =  marketDataService.getLastPricesSync(Collections.singleton(uid));
 
-        }catch (Exception e){
+        }catch (ApiRuntimeException e){
             throw new NotFoundException("UID not found");
         }
+        return null;
     }
 }
