@@ -1,6 +1,6 @@
 package com.example.tinkoffstocksservice.adapter.web;
 
-import com.example.tinkoffstocksservice.adapter.web.dto.response.CurrencyResponse;
+import com.example.tinkoffstocksservice.adapter.web.dto.response.ShortCurrencyResponse;
 import com.example.tinkoffstocksservice.service.CurrencyService;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CurrencyController {
     CurrencyService currencyService;
     @GetMapping("/getCurrencyByUID")
-    public CurrencyResponse getCurrencyByUID(@RequestParam("uid") @NotBlank String uid){
+    public ShortCurrencyResponse getCurrencyByUID(@RequestParam("uid") @NotBlank String uid){
         return currencyService.getCurrencyByUID(uid);
     }
 }

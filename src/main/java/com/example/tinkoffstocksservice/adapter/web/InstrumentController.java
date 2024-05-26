@@ -24,8 +24,8 @@ public class InstrumentController {
     InstrumentService instrumentService;
 
     @GetMapping("/findInstrument")
-    public List<ShortInstrumentResponse> findStockBySearchParameter(@RequestParam("param") @NotBlank String param,
-                                                                    @RequestParam("type") @NotBlank @InstrumentTypeConstraint String type) {
+    public List<ShortInstrumentResponse> findStockBySearchParameter(@RequestParam(value = "param") @NotBlank String param,
+                                                                    @RequestParam(value = "type") @NotBlank @InstrumentTypeConstraint String type) {
         return instrumentService.getStockBySearchParam(param, type);
     }
 }

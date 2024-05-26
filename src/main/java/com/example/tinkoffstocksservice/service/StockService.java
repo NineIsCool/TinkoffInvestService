@@ -37,7 +37,7 @@ public class StockService {
         try {
             stock = instrumentsService.getShareByUidSync(uid);
         } catch (ApiRuntimeException e) {
-            throw new NotFoundException(uid);
+            throw new NotFoundException("Stock by UID not found");
         }
         return stockMapper.stockToResponse(stock);
     }
@@ -49,7 +49,7 @@ public class StockService {
         try {
             lastPrices = marketData.getLastPricesSync(Collections.singleton(uid));
         } catch (ApiRuntimeException e) {
-            throw new NotFoundException(uid);
+            throw new NotFoundException("Stock price by UID not found");
         }
         return priceMapper.priceResponse(stockResponse.currency(), lastPrices.get(0));
     }

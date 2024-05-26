@@ -11,7 +11,7 @@ public class NotFoundException extends RuntimeException {
 
     ErrorCode code = ErrorCode.NOT_FOUND;
 
-    public NotFoundException(String param) {
-        super("Not found by " + param);
+    public NotFoundException(String err) {
+        super("Not found Exception:" + err);
     }
 }

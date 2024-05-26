@@ -1,7 +1,8 @@
 package com.example.tinkoffstocksservice.service;
 
-import com.example.tinkoffstocksservice.adapter.web.dto.response.CurrencyResponse;
+import com.example.tinkoffstocksservice.adapter.web.dto.response.ShortCurrencyResponse;
 import com.example.tinkoffstocksservice.adapter.web.errors.NotFoundException;
+import com.example.tinkoffstocksservice.service.mapper.CurrencyMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,7 +16,6 @@ import ru.tinkoff.piapi.core.MarketDataService;
 import ru.tinkoff.piapi.core.exception.ApiRuntimeException;
 
 import java.util.Collections;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,16 +23,18 @@ import java.util.List;
 @Log4j2
 public class CurrencyService {
     InvestApi investApi;
-    public CurrencyResponse getCurrencyByUID(String uid) {
+    CurrencyMapper currencyMapper;
+    public ShortCurrencyResponse getCurrencyByUID(String uid) {
         InstrumentsService instrumentsService= investApi.getInstrumentsService();
         MarketDataService marketDataService= investApi.getMarketDataService();
+        ShortCurrencyResponse shortCurrencyResponse;
         try {
             Currency currency = instrumentsService.getCurrencyByUidSync(uid);
-            List<LastPrice> price =  marketDataService.getLastPricesSync(Collections.singleton(uid));
-
+            LastPrice price =  marketDataService.getLastPricesSync(Collections.singleton(uid)).get(0);
+            shortCurrencyResponse=currencyMapper.CurrencyToResponse(currency,price);
         }catch (ApiRuntimeException e){
-            throw new NotFoundException("UID not found");
+            throw new NotFoundException("Currency by UID not found");
         }
-        return null;
+        return shortCurrencyResponse;
     }
 }
