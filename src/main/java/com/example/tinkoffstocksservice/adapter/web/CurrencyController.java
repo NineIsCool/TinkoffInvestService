@@ -1,5 +1,6 @@
 package com.example.tinkoffstocksservice.adapter.web;
 
+import com.example.tinkoffstocksservice.adapter.web.dto.response.PriceResponse;
 import com.example.tinkoffstocksservice.adapter.web.dto.response.ShortCurrencyResponse;
 import com.example.tinkoffstocksservice.service.CurrencyService;
 import jakarta.validation.constraints.NotBlank;
@@ -22,5 +23,10 @@ public class CurrencyController {
     @GetMapping("/getCurrencyByUID")
     public ShortCurrencyResponse getCurrencyByUID(@RequestParam("uid") @NotBlank String uid){
         return currencyService.getCurrencyByUID(uid);
+    }
+    @GetMapping("/getPriceInCurrency")
+    public ShortCurrencyResponse getPriceInCurrency(@RequestParam("uidCurrency") @NotBlank String uidCurrency,
+                                            @RequestParam("uidConvert") @NotBlank String uidConvert){
+        return currencyService.getConvertedCurrency(uidCurrency,uidConvert);
     }
 }

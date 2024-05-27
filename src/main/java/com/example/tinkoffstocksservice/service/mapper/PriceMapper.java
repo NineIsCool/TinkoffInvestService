@@ -9,6 +9,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.piapi.contract.v1.LastPrice;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 @Component
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
