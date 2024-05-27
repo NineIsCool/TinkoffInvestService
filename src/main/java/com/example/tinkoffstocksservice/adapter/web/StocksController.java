@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.ExecutionException;
+
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
@@ -23,7 +25,11 @@ public class StocksController {
 
     @GetMapping("/stockByUID")
     public StockResponse getStockByUid(@RequestParam("uid") @NotBlank String uid) {
-        return stockService.getStockByUid(uid);
+        try {
+            return stockService.getStockByUid(uid).get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("/getPriceByUID")

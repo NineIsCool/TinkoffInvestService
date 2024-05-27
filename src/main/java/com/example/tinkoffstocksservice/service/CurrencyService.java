@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
@@ -36,27 +38,31 @@ public class CurrencyService {
         MarketDataService marketDataService = investApi.getMarketDataService();
         ShortCurrencyResponse shortCurrencyResponse;
         try {
-            Currency currency = instrumentsService.getCurrencyByUidSync(uid);
-            LastPrice price = marketDataService.getLastPricesSync(Collections.singleton(uid)).get(0);
-            shortCurrencyResponse = currencyMapper.CurrencyToResponse(currency, price);
+            CompletableFuture<Currency> currencyFuture = instrumentsService.getCurrencyByUid(uid);
+            CompletableFuture<List<LastPrice>> priceFuture = marketDataService.getLastPrices(Collections.singleton(uid));
+            shortCurrencyResponse = currencyMapper.CurrencyToResponse(currencyFuture.get(), priceFuture.get().get(0));
         } catch (ApiRuntimeException e) {
             throw new NotFoundException("Currency by UID not found");
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
         }
         return shortCurrencyResponse;
     }
 
-    public ShortCurrencyResponse getConvertedCurrency(String uidCurrency, String uidConvert) {
+    public ShortCurrencyResponse getConvertedCurrency(String uidCurrency, String uidCurrencyToConvert) {
         InstrumentsService instrumentsService = investApi.getInstrumentsService();
         MarketDataService marketDataService = investApi.getMarketDataService();
         ShortCurrencyResponse shortCurrencyResponse;
         try {
-            Currency currencyConvert = instrumentsService.getCurrencyByUidSync(uidConvert);
-            List<LastPrice> priceConvert = marketDataService.getLastPricesSync(Arrays.asList(uidCurrency, uidConvert));
-            PriceResponse priceResponse = convertCurrency.convertCurrency(priceConvert.get(0),priceConvert.get(1),currencyConvert.getIsoCurrencyName());
-            Currency currency = instrumentsService.getCurrencyByUidSync(uidCurrency);
-            shortCurrencyResponse = currencyMapper.CurrencyToResponse(currency,priceResponse);
+            CompletableFuture<Currency> currencyToConvertFuture = instrumentsService.getCurrencyByUid(uidCurrencyToConvert);
+            List<LastPrice> pricesFuture = marketDataService.getLastPrices(Arrays.asList(uidCurrency, uidCurrencyToConvert)).get();
+            PriceResponse priceResponse = convertCurrency.convertCurrency(pricesFuture.get(0), pricesFuture.get(1), currencyToConvertFuture.get().getIsoCurrencyName());
+            CompletableFuture<Currency> currency = instrumentsService.getCurrencyByUid(uidCurrency);
+            shortCurrencyResponse = currencyMapper.CurrencyToResponse(currency.get(), priceResponse);
         } catch (ApiRuntimeException e) {
             throw new NotFoundException("Currency by UID not found");
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
         }
         return shortCurrencyResponse;
     }

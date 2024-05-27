@@ -5,12 +5,14 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 import ru.tinkoff.piapi.core.InvestApi;
 
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties(ApiConfig.class)
 @Log4j2
+@EnableAsync
 public class ApplicationConfig {
     private final ApiConfig apiConfig;
 
