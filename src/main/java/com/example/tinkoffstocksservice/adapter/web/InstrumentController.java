@@ -23,7 +23,7 @@ import java.util.List;
 public class InstrumentController {
     InstrumentService instrumentService;
 
-    @GetMapping("/findInstrument")
+    @GetMapping("/find")
     public List<ShortInstrumentResponse> findStockBySearchParameter(@RequestParam(value = "param") @NotBlank String param,
                                                                     @RequestParam(value = "type") @NotBlank @InstrumentTypeConstraint String type) {
         return instrumentService.getStockBySearchParam(param, type);

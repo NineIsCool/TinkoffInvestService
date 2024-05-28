@@ -19,20 +19,16 @@ import java.util.concurrent.ExecutionException;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @Validated
-@RequestMapping("api/tinkoff/stocks")
+@RequestMapping("api/tinkoff/stock")
 public class StocksController {
     StockService stockService;
 
-    @GetMapping("/stockByUID")
+    @GetMapping("")
     public StockResponse getStockByUid(@RequestParam("uid") @NotBlank String uid) {
-        try {
-            return stockService.getStockByUid(uid).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+        return stockService.getStockByUid(uid);
     }
 
-    @GetMapping("/getPriceByUID")
+    @GetMapping("/price")
     public PriceResponse getPriceStockByUid(@RequestParam("uid") @NotBlank String uid) {
         return stockService.getPriceStock(uid);
     }

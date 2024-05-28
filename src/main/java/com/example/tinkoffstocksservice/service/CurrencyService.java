@@ -41,10 +41,8 @@ public class CurrencyService {
             CompletableFuture<Currency> currencyFuture = instrumentsService.getCurrencyByUid(uid);
             CompletableFuture<List<LastPrice>> priceFuture = marketDataService.getLastPrices(Collections.singleton(uid));
             shortCurrencyResponse = currencyMapper.CurrencyToResponse(currencyFuture.get(), priceFuture.get().get(0));
-        } catch (ApiRuntimeException e) {
-            throw new NotFoundException("Currency by UID not found");
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            throw new NotFoundException(String.format("Currency by UID(%s) not found",uid));
         }
         return shortCurrencyResponse;
     }
@@ -59,10 +57,8 @@ public class CurrencyService {
             PriceResponse priceResponse = convertCurrency.convertCurrency(pricesFuture.get(0), pricesFuture.get(1), currencyToConvertFuture.get().getIsoCurrencyName());
             CompletableFuture<Currency> currency = instrumentsService.getCurrencyByUid(uidCurrency);
             shortCurrencyResponse = currencyMapper.CurrencyToResponse(currency.get(), priceResponse);
-        } catch (ApiRuntimeException e) {
-            throw new NotFoundException("Currency by UID not found");
         } catch (ExecutionException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw new NotFoundException(String.format("Currency can not converted"));
         }
         return shortCurrencyResponse;
     }

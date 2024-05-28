@@ -7,7 +7,6 @@ import com.example.tinkoffstocksservice.service.mapper.PriceMapper;
 import com.example.tinkoffstocksservice.service.mapper.StockMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Async;
@@ -33,32 +32,25 @@ public class StockService {
     StockMapper stockMapper;
     PriceMapper priceMapper;
 
-    @SneakyThrows
-    @Async
-    public CompletableFuture<StockResponse> getStockByUid(String uid) {
+
+    public StockResponse getStockByUid(String uid) {
         InstrumentsService instrumentsService = investApi.getInstrumentsService();
-        CompletableFuture<Share> stock;
+        CompletableFuture<Share> stock = instrumentsService.getShareByUid(uid);
         try {
-            stock = instrumentsService.getShareByUid(uid);
-        } catch (ApiRuntimeException e) {
-            throw new NotFoundException("Stock by UID not found");
+            return stockMapper.stockToResponse(stock.get());
+        } catch (InterruptedException | ExecutionException e) {
+            throw new NotFoundException(String.format("Stock by UID(%s) not found",uid));
         }
-        return CompletableFuture.completedFuture(stockMapper.stockToResponse(stock.get()));
     }
 
     public PriceResponse getPriceStock(String uid) {
         MarketDataService marketData = investApi.getMarketDataService();
-        CompletableFuture<StockResponse> stockResponse = getStockByUid(uid);
-        CompletableFuture<List<LastPrice>> lastPrices;
-        try {
-            lastPrices = marketData.getLastPrices(Collections.singleton(uid));
-        } catch (ApiRuntimeException e) {
-            throw new NotFoundException("Stock price by UID not found");
-        }
+        CompletableFuture<StockResponse> stockResponse = CompletableFuture.supplyAsync(()->getStockByUid(uid));
+        CompletableFuture<List<LastPrice>> lastPrices = marketData.getLastPrices(Collections.singleton(uid));
         try {
             return priceMapper.priceResponse(stockResponse.get().currency(), lastPrices.get().get(0));
         } catch (InterruptedException | ExecutionException e) {
-                throw new RuntimeException(e);
+            throw new NotFoundException(String.format("Stock by UID(%s) not found",uid));
         }
     }
 }

@@ -4,6 +4,7 @@ import com.example.tinkoffstocksservice.adapter.web.errors.common.ErrorCode;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,14 +20,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommonAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler
-    public ErrorResponse handleNotFoundException(NotFoundException e) {
-        return new ErrorResponse(e.getCode(), e.getMessage());
+    public ResponseEntity<ErrorResponse>  handleNotFoundException(NotFoundException e) {
+        return new ResponseEntity<>(new ErrorResponse(e.getErrorCode(), e.getMessage()),e.getHttpStatus());
     }
 
     @ExceptionHandler
-    public List<ErrorResponse> handleConstraints(ConstraintViolationException e) {
-        return e.getConstraintViolations()
-                .stream().map(ex -> new ErrorResponse(ErrorCode.VALIDATION_ERROR, ex.getPropertyPath().toString(), ex.getMessage())).toList();
+    public ResponseEntity<ErrorResponse>  handleConstraints(ConstraintViolationException e) {
+        return new ResponseEntity<>(new ErrorResponse(ErrorCode.VALIDATION_ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @Override
