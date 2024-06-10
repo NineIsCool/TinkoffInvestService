@@ -4,4 +4,5 @@ public record ShortInstrumentResponse(
         String name,
         String uid,
         String ticker
-) {}
+) {
+}

@@ -5,7 +5,6 @@ import com.example.tinkoffstocksservice.service.mapper.InstrumentMapper;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.piapi.contract.v1.InstrumentShort;
 import ru.tinkoff.piapi.core.InstrumentsService;
@@ -17,7 +16,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
-@Log4j2
 public class InstrumentService {
     InvestApi investApi;
     InstrumentMapper instrumentMapper;

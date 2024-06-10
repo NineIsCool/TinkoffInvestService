@@ -12,7 +12,7 @@ import ru.tinkoff.piapi.contract.v1.Share;
 @Component
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class StockMapper {
-    public StockResponse stockToResponse(Share stock){
-        return new StockResponse(stock.getName(),stock.getUid(),stock.getTicker(),stock.getCurrency(),stock.getLot());
+    public StockResponse stockToResponse(Share stock) {
+        return new StockResponse(stock.getName(), stock.getUid(), stock.getTicker(), stock.getCurrency(), stock.getLot());
     }
 }

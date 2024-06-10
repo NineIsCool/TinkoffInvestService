@@ -1,6 +1,6 @@
-package com.example.tinkoffstocksservice.adapter.web.errors;
+package com.example.tinkoffstocksservice.adapter.web.error;
 
-import com.example.tinkoffstocksservice.adapter.web.errors.common.ErrorCode;
+import com.example.tinkoffstocksservice.adapter.web.error.common.ErrorCode;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -14,18 +14,17 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class CommonAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse>  handleNotFoundException(NotFoundException e) {
-        return new ResponseEntity<>(new ErrorResponse(e.getErrorCode(), e.getMessage()),e.getHttpStatus());
+    public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException e) {
+        return new ResponseEntity<>(new ErrorResponse(e.getErrorCode(), e.getMessage()), e.getHttpStatus());
     }
 
     @ExceptionHandler
-    public ResponseEntity<ErrorResponse>  handleConstraints(ConstraintViolationException e) {
+    public ResponseEntity<ErrorResponse> handleConstraints(ConstraintViolationException e) {
         return new ResponseEntity<>(new ErrorResponse(ErrorCode.VALIDATION_ERROR, e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 

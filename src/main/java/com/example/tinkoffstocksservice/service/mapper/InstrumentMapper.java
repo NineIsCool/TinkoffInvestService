@@ -1,7 +1,6 @@
 package com.example.tinkoffstocksservice.service.mapper;
 
 import com.example.tinkoffstocksservice.adapter.web.dto.response.ShortInstrumentResponse;
-import com.example.tinkoffstocksservice.service.converter.MoneyValueConverter;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +11,7 @@ import ru.tinkoff.piapi.contract.v1.InstrumentShort;
 @Component
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class InstrumentMapper {
-    public ShortInstrumentResponse InstrumentToResponse(InstrumentShort instrument){
-        return new ShortInstrumentResponse(instrument.getName(),instrument.getUid(),instrument.getTicker());
+    public ShortInstrumentResponse InstrumentToResponse(InstrumentShort instrument) {
+        return new ShortInstrumentResponse(instrument.getName(), instrument.getUid(), instrument.getTicker());
     }
 }

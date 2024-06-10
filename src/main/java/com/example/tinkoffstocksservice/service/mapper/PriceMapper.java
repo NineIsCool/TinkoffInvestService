@@ -9,16 +9,14 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.piapi.contract.v1.LastPrice;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
 @RequiredArgsConstructor
 @Component
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class PriceMapper {
     QuotationConverter quotationConverter;
     TimestampConverter timestampConverter;
-    public PriceResponse priceResponse(String currency,LastPrice lastPrice){
+
+    public PriceResponse priceResponse(String currency, LastPrice lastPrice) {
         return new PriceResponse(currency,
                 quotationConverter.convertQuotationToBigDecimal(lastPrice.getPrice()),
                 timestampConverter.convertTimestampToLocalDateTime(lastPrice.getTime()));
