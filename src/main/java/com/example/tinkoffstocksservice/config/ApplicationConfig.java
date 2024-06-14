@@ -20,6 +20,7 @@ public class ApplicationConfig {
     public InvestApi investApi() {
         String token = System.getenv("SSO_TOKEN");
         InvestApi investApi;
+        log.info(token);
         if (apiConfig.getIsSandBoxMode()) {
             investApi = InvestApi.createSandbox(token);
             log.info("connection to tinkoff api success! Mode: SandBox");

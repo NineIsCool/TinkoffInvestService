@@ -1,3 +1,5 @@
 connection-tinkoff:
   isSandBoxMode: true
   isReadonly: true
+server:
+  port: 8082

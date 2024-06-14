@@ -12,6 +12,6 @@ import java.time.ZonedDateTime;
 public class TimestampConverter {
     public LocalDateTime convertTimestampToLocalDateTime(Timestamp timestamp) {
         Instant instant = Instant.ofEpochSecond(timestamp.getSeconds(), timestamp.getNanos());
-        return LocalDateTime.ofInstant(instant, ZoneId.of("UTC" + ZonedDateTime.now().getOffset()));
+        return LocalDateTime.ofInstant(instant, ZoneId.of("UTC+3"));
     }
 }
